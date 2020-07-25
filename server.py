@@ -43,30 +43,7 @@ def search_pages(query: str) -> List[dict]:
             }
         }
     })
-    # 個々のページを含むリストを返す。
-    #for k in result['hits']['hits'][0].values():
-    #    print(k)
-    """for k in result.keys():
-        print(type(result[k]))
-        try:
-            for a in result[k].keys():
-                print("L" + type(result[k][a]))
-                if isinstance(result[k][a], list):
-                    for m in result[k][a]:
-                        print(m.keys())
-            try:
-                for i in result[k].keys():
-                    for u in result[k][i].keys():
-                        print(u)
-                        
-            except:
-                print("no")
 
-
-        except:
-            print("no")"""
-
-    
     print("最初だよ")
     def keykun(result,kazu):
         for key, value in zip(result.keys(), result.values()):

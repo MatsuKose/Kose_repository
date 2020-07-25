@@ -2,12 +2,13 @@ import scrapy
 
 from myproject.items import Page
 from myproject.utils import get_content
+from myproject.utils import bs4_test
 
 
 class BroadSpider(scrapy.Spider):
     name = 'broad'
     # はてなブックマークの新着エントリーページ。
-    start_urls = ['http://b.hatena.ne.jp/entrylist/all']
+    start_urls = ['https://b.hatena.ne.jp/entrylist/all']
 
     def parse(self, response):
         """
@@ -29,5 +30,6 @@ class BroadSpider(scrapy.Spider):
         """
         # utils.pyに定義したget_content()関数でタイトルと本文を抽出する。
         title, content = get_content(response.text)
+        count_image =   bs4_test(response.text)
         # Pageオブジェクトを作成してyieldする。
-        yield Page(url=response.url, title=title, content=content)
+        yield Page(url=response.url, title=title, content=content,count_image=count_image)
