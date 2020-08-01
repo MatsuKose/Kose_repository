@@ -31,7 +31,7 @@ class BroadSpider(scrapy.Spider):
         """
         # utils.pyに定義したget_content()関数でタイトルと本文を抽出する。
         title, content = get_content(response.text)
-        count_image =   bs4_test(response.text)
+        #count_image =   bs4_test(response.text)
         meishi = mecab_test(response.text)
         # Pageオブジェクトを作成してyieldする。
         yield Page(url=response.url, title=title, content=content,count_image=count_image, meishi="meishi")
