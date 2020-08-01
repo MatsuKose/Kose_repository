@@ -33,6 +33,7 @@ def bs4_test(html: str) -> Tuple[str, str]:
     return count_img
 
 def mecab_test(html: str) -> Tuple[str, str]:
+    print("aaaa")
     count = 0
     mecabTagger = MeCab.Tagger("-Ochasen")
     node = mecabTagger.parseToNode(html)
