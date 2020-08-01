@@ -30,6 +30,7 @@ class Page(scrapy.Item):
     title = scrapy.Field()
     content = scrapy.Field()
     count_image=scrapy.Field()
+    meishi=scrapy.Field()
     def __repr__(self):
         """
         ログへの出力時に長くなり過ぎないよう、contentを省略する。

@@ -44,7 +44,7 @@ def search_pages(query: str) -> List[dict]:
         }
     })
 
-    print("最初だよ")
+    print("最初だよ!!!!!!")
     def keykun(result,kazu):
         for key, value in zip(result.keys(), result.values()):
             #テスト-----------------
@@ -68,7 +68,7 @@ def search_pages(query: str) -> List[dict]:
     keykun(result,1)
 
 
-
+    print(result['hits']['hits'])
     return result['hits']['hits']
 
 if __name__ == '__main__':

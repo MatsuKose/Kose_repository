@@ -4,6 +4,7 @@ from typing import Tuple
 import lxml.html
 import readability
 from bs4 import BeautifulSoup  # BeautifulSoupクラスをインポート
+import MeCab
 
 
 # readability-lxmlのDEBUG/INFOレベルのログを表示しないようにする。
@@ -30,3 +31,15 @@ def bs4_test(html: str) -> Tuple[str, str]:
     # import pdb;pdb.set_trace()
     
     return count_img
+
+def mecab_test(html: str) -> Tuple[str, str]:
+    count = 0
+    mecabTagger = MeCab.Tagger("-Ochasen")
+    node = mecabTagger.parseToNode(html)
+    while node:
+        word = node.surface
+        hinshi = node.feature.split(",")[0]
+        if hinshi == "名詞":
+            count += 1
+        node = node.next
+    return count

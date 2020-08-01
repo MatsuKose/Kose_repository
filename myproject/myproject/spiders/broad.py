@@ -3,6 +3,7 @@ import scrapy
 from myproject.items import Page
 from myproject.utils import get_content
 from myproject.utils import bs4_test
+from myproject.utils import mecab_test
 
 
 class BroadSpider(scrapy.Spider):
@@ -31,5 +32,6 @@ class BroadSpider(scrapy.Spider):
         # utils.pyに定義したget_content()関数でタイトルと本文を抽出する。
         title, content = get_content(response.text)
         count_image =   bs4_test(response.text)
+        meishi = mecab_test(response.text)
         # Pageオブジェクトを作成してyieldする。
-        yield Page(url=response.url, title=title, content=content,count_image=count_image)
+        yield Page(url=response.url, title=title, content=content,count_image=count_image, meishi=meishi)
