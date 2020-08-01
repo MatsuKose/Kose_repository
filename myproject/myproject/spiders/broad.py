@@ -34,4 +34,4 @@ class BroadSpider(scrapy.Spider):
         count_image =   bs4_test(response.text)
         meishi = mecab_test(response.text)
         # Pageオブジェクトを作成してyieldする。
-        yield Page(url=response.url, title=title, content=content,count_image=count_image, meishi=meishi)
+        yield Page(url=response.url, title=title, content=content,count_image=count_image, meishi="meishi")
