@@ -51,6 +51,7 @@ def create_pages_index(es: Elasticsearch):
                     "url": {"type": "text"},
                     "title": {"type": "text", "analyzer": "kuromoji_analyzer"},
                     "content": {"type": "text", "analyzer": "kuromoji_analyzer"}
+                    
                 }
             }
         }

@@ -5,6 +5,7 @@ import lxml.html
 import readability
 from bs4 import BeautifulSoup  # BeautifulSoupクラスをインポート
 import MeCab
+import collections
 
 
 # readability-lxmlのDEBUG/INFOレベルのログを表示しないようにする。
@@ -22,7 +23,17 @@ def get_content(html: str) -> Tuple[str, str]:
     content_text = lxml.html.fromstring(content_html).text_content().strip()
     short_title = document.short_title()
 
-    return short_title, content_text
+    #Mecab-----
+
+    l = []
+    mecabTagger = MeCab.Tagger("-Ochasen")
+    node = mecabTagger.parseToNode(content_text)
+    while node:
+        word = node.surface
+        l.append(word) if word != "" else print("")
+        node = node.next
+
+    return short_title, content_text, len(l)
 
 def bs4_test(html: str) -> Tuple[str, str]:
     soup = BeautifulSoup(html)
@@ -31,23 +42,3 @@ def bs4_test(html: str) -> Tuple[str, str]:
     # import pdb;pdb.set_trace()
     
     return count_img
-
-def mecab_test(html: str) -> Tuple[str, str]:
-    print("""
-    
-    
-    
-    
-    
-    
-    """)
-    count = 0
-    mecabTagger = MeCab.Tagger("-Ochasen")
-    node = mecabTagger.parseToNode(html)
-    while node:
-        word = node.surface
-        hinshi = node.feature.split(",")[0]
-        if hinshi == "名詞":
-            count += 1
-        node = node.next
-    return count

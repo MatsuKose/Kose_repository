@@ -30,13 +30,14 @@ class Page(scrapy.Item):
     title = scrapy.Field()
     content = scrapy.Field()
     count_image=scrapy.Field()
-    meishi=scrapy.Field()
-    def __repr__(self):
-        """
-        ログへの出力時に長くなり過ぎないよう、contentを省略する。
-        """
+    hinshi=scrapy.Field()
+
+    """def __repr__(self):
+        
+        #ログへの出力時に長くなり過ぎないよう、contentを省略する。
+        
         p = Page(self)  # このPageを複製したPageを得る。
         if len(p['content']) > 100:
             p['content'] = p['content'][:100] + '...'  # 100文字より長い場合は省略する。
 
-        return super(Page, p).__repr__()  # 複製したPageの文字列表現を返す。
+        return super(Page, p).__repr__()  # 複製したPageの文字列表現を返す。"""

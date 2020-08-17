@@ -1,9 +1,18 @@
 from typing import List  # 型ヒントのためにインポート
-
+import re
 from elasticsearch import Elasticsearch
-from bottle import route, run, request, template
+from bottle import route, run, request, template, static_file
+
+from myproject.myproject.standard.resipi import resi
+import collections
+import MeCab
+from operator import itemgetter
 
 es = Elasticsearch(['localhost:9200'])
+
+@route('/<filename:path>')  #静的ファイルを使う
+def send_static(filename):
+    return static_file(filename, root='')
 
 
 @route('/')
@@ -11,25 +20,39 @@ def index():
     """
     / へのリクエストを処理する。
     """
-    query = request.query.q  # クエリ（?q= の値）を取得する。
+    query = request.query.q # クエリ（?q= の値）を取得する。
+
+    
     # クエリがある場合は検索結果を、ない場合は[]をpagesに代入する。
     pages = search_pages(query) if query else []
+
     # Bottleのテンプレート機能を使って、search.tplというファイルから読み込んだテンプレートに
     # queryとpagesの値を渡してレンダリングした結果をレスポンスボディとして返す。
-    return template('search', query=query, pages=pages)
+    return template('search', query=query, pages=pages) #search.tqlにqueryとpagesを渡す
 
 
 def search_pages(query: str) -> List[dict]:
     """
     引数のクエリでElasticsearchからWebページを検索し、結果のリストを返す。
     """
-    # Simple Query Stringを使って検索する。
     result = es.search(index='pages', body={
-        "query": {
-            "simple_query_string": {
-                "query": query,
-                "fields": ["title^5", "content"],
-                "default_operator": "and"
+        "size": 100,    #出す件数
+        "_source": [    #使用するフィールドを決める（分かりやすい
+            "url",
+            "title",
+            "content",
+            "count_image",
+            "hinshi",
+        ],
+        "query": {  #検索基準作ります
+            "bool": {   #複数作ります
+                "must": {   #どれぐらい一致しているかでスコアが変わる
+                
+                    "multi_match" : { #キーワードにマッチ（マッチ複数
+                        "query":    query,  #キーワード 
+                        "fields": [ "title^5", "content"]   #キーワードのターゲット
+                    }
+                }
             }
         },
         # contentフィールドでマッチする部分をハイライトするよう設定。
@@ -43,6 +66,46 @@ def search_pages(query: str) -> List[dict]:
             }
         }
     })
+
+    
+    query = request.query.p
+    if query == "words":
+        m = []
+        for i,n in enumerate(result['hits']['hits']):
+            m.append(result['hits']['hits'][i]['_source']['hinshi'])
+        c = zip(result['hits']['hits'], m)  #まとめる
+        c = sorted(c, key = lambda x: x[1],reverse=True)    #hinshiを基準に並び替え
+        #a, b = list(zip(*c)) タプル型になってしまう
+        result['hits']['hits'], b = list(map(list, (zip(*c))))   #元の形で返す
+
+    if query == "images":
+        m = []
+        for i,n in enumerate(result['hits']['hits']):
+            m.append(result['hits']['hits'][i]['_source']['count_image'])
+        c = zip(result['hits']['hits'], m)  #まとめる
+        c = sorted(c, key = lambda x: x[1],reverse=True)    #hinshiを基準に並び替え
+        #a, b = list(zip(*c)) タプル型になってしまう
+        result['hits']['hits'], b = list(map(list, (zip(*c))))   #元の形で返す
+
+
+
+    """if query:
+        count = 0
+        l = []
+        for i,n in enumerate(result['hits']['hits']):
+            m = resi(result['hits']['hits'][i]['_source']['content'])
+            if m != []:
+                print(m)
+                print(result['hits']['hits'][i]['_source']['title'])
+                l.append(result['hits']['hits'][i])
+                count += 1
+        print(count)
+        del result['hits']['hits'][:]
+        result['hits']['hits'] = l"""
+
+
+
+
 
     print("最初だよ!!!!!!")
     def keykun(result,kazu):
@@ -67,8 +130,7 @@ def search_pages(query: str) -> List[dict]:
 
     keykun(result,1)
 
-
-    print(result['hits']['hits'])
+    #print(result['hits']['hits'])
     return result['hits']['hits']
 
 if __name__ == '__main__':
