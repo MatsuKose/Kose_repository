@@ -4,6 +4,8 @@ from elasticsearch import Elasticsearch
 from bottle import route, run, request, template, static_file
 
 from myproject.myproject.standard.resipi import resi
+from myproject.myproject.standard.kau import kau
+from myproject.myproject.standard.taberu import taberu
 import collections
 import MeCab
 from operator import itemgetter
@@ -83,17 +85,15 @@ def search_pages(query: str) -> List[dict]:
         for i,n in enumerate(result['hits']['hits']):
             m.append(result['hits']['hits'][i]['_source']['count_image'])
         c = zip(result['hits']['hits'], m)  #まとめる
-        c = sorted(c, key = lambda x: x[1],reverse=True)    #hinshiを基準に並び替え
+        c = sorted(c, key = lambda x: x[1],reverse=True)    #count_imageを基準に並び替え
         #a, b = list(zip(*c)) タプル型になってしまう
         result['hits']['hits'], b = list(map(list, (zip(*c))))   #元の形で返す
 
-
-
-    """if query:
+    if query == "buy":
         count = 0
         l = []
         for i,n in enumerate(result['hits']['hits']):
-            m = resi(result['hits']['hits'][i]['_source']['content'])
+            m = kau(result['hits']['hits'][i]['_source']['content'])
             if m != []:
                 print(m)
                 print(result['hits']['hits'][i]['_source']['title'])
@@ -101,7 +101,26 @@ def search_pages(query: str) -> List[dict]:
                 count += 1
         print(count)
         del result['hits']['hits'][:]
-        result['hits']['hits'] = l"""
+        result['hits']['hits'] = l
+
+    if query == "eat":
+        l = []
+        b = []
+        for i,n in enumerate(result['hits']['hits']):
+            m = taberu(result['hits']['hits'][i]['_source']['content'])
+            if m != []:
+                print(m)
+                print(result['hits']['hits'][i]['_source']['title'])
+                l.append(result['hits']['hits'][i])
+                b.append(len(m))
+        print(b)
+        del result['hits']['hits'][:]
+        result['hits']['hits'] = l
+
+        c = zip(result['hits']['hits'], b)  #まとめる
+        c = sorted(c, key = lambda x: x[1],reverse=True)    #単語数を基準に並び替え
+        result['hits']['hits'], a = list(map(list, (zip(*c))))   #元の形で返す
+
 
 
 

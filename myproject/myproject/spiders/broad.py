@@ -21,7 +21,7 @@ class BroadSpider(scrapy.Spider):
             yield scrapy.Request(url, callback=self.parse_page)
 
         # page=の値が1桁である間のみ「次の20件」のリンクをたどる（最大9ページ目まで）。
-        url_more = response.css('.entrylist-readmore > a::attr("href")').re_first(r'.*\?page=\d{1}$')
+        url_more = response.css('.entrylist-readmore > a::attr("href")').re_first(r'.*\?page=\d{1,2}$')
         if url_more:
             yield response.follow(url_more)
 

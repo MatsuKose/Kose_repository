@@ -29,16 +29,22 @@
     </div>
     <!-- 検索カテゴリ　-->
     <div class="category">
-        <div class="all">
+        <div class="a all">
             <a href="http://localhost:8000/?q={{ query }}"><p>🔍全て</p></a>
         </div>
 
-        <div class="know">
+        <div class="a know">
             <a href="http://localhost:8000/?q={{ query }}&p=words"><p>知る</p></a>
         </div>
 
-        <div class="watch">
+        <div class="a watch">
             <a href="http://localhost:8000/?q={{ query }}&p=images"><p>見る</p></a>
+        </div>
+        <div class="a buy">
+            <a href="http://localhost:8000/?q={{ query }}&p=buy"><p>買う</p></a>
+        </div>
+        <div class="a eat">
+            <a href="http://localhost:8000/?q={{ query }}&p=eat"><p>食べる</p></a>
         </div>
     </div>
 
