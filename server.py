@@ -6,6 +6,8 @@ from bottle import route, run, request, template, static_file
 from myproject.myproject.standard.resipi import resi
 from myproject.myproject.standard.kau import kau
 from myproject.myproject.standard.taberu import taberu
+from myproject.myproject.standard.netui import netui
+import random
 import collections
 import MeCab
 from operator import itemgetter
@@ -28,12 +30,39 @@ def index():
     # クエリがある場合は検索結果を、ない場合は[]をpagesに代入する。
     pages = search_pages(query) if query else []
 
+
+    l = []
+    r = []
+
     # Bottleのテンプレート機能を使って、search.tplというファイルから読み込んだテンプレートに
     # queryとpagesの値を渡してレンダリングした結果をレスポンスボディとして返す。
     return template('search', query=query, pages=pages) #search.tqlにqueryとpagesを渡す
 
+def netui():
+    query = request.query.p
+    n1 = -10
+    n2 = 10
+    if query == "netui-1":
+        n1 = -1.0
+        n2 = 0.04
+    elif query == "netui1":
+        n1 = 0.04
+        n2 = 0.06
+    elif query == "netui2":
+        n1 = 0.06
+        n2 = 0.18
+    elif query == "netui3":
+        n1 = 0.18
+        n2 = 5.0
+    
+    return n1 , n2
 
 def search_pages(query: str) -> List[dict]:
+
+
+    n1,n2 = netui()
+
+
     """
     引数のクエリでElasticsearchからWebページを検索し、結果のリストを返す。
     """
@@ -43,8 +72,7 @@ def search_pages(query: str) -> List[dict]:
             "url",
             "title",
             "content",
-            "count_image",
-            "hinshi",
+            "kimoti"
         ],
         "query": {  #検索基準作ります
             "bool": {   #複数作ります
@@ -53,6 +81,14 @@ def search_pages(query: str) -> List[dict]:
                     "multi_match" : { #キーワードにマッチ（マッチ複数
                         "query":    query,  #キーワード 
                         "fields": [ "title^5", "content"]   #キーワードのターゲット
+                    }
+                },
+                "filter":{
+                    "range": {
+                        "kimoti": {
+                                "gte":n1,
+                                "lt":n2
+                        }
                     }
                 }
             }
@@ -80,7 +116,7 @@ def search_pages(query: str) -> List[dict]:
         #a, b = list(zip(*c)) タプル型になってしまう
         result['hits']['hits'], b = list(map(list, (zip(*c))))   #元の形で返す
 
-    if query == "images":
+    """if query == "images":
         m = []
         for i,n in enumerate(result['hits']['hits']):
             m.append(result['hits']['hits'][i]['_source']['count_image'])
@@ -121,9 +157,29 @@ def search_pages(query: str) -> List[dict]:
         c = sorted(c, key = lambda x: x[1],reverse=True)    #単語数を基準に並び替え
         result['hits']['hits'], a = list(map(list, (zip(*c))))   #元の形で返す
 
+    netuikun = []
+    for i,n in enumerate(result['hits']['hits']):
+        n = netui(result['hits']['hits'][i]["_source"]["content"])
+        netuikun.append(n)
+        print(n,len(result['hits']['hits']),len(netuikun))
+
+    c = zip(result['hits']['hits'], netuikun)  #まとめる
+    c = sorted(c, key = lambda x: x[1],reverse=True)
+    a, b = list(map(list, (zip(*c))))   #元の形で返す
+    for i,n in enumerate(a):
+        print(a[i]['_source']['title'])"""
+        
+        
+        
 
 
-
+    for i,n in enumerate(result['hits']['hits']):   #本当はクローリング時にやる事
+        title = result['hits']['hits'][i]['_source']['title']
+        url = result['hits']['hits'][i]['_source']['url']
+        if len(title) >= 30:
+            result['hits']['hits'][i]['_source']['title'] = title[:30] + "......"
+        if len(url) >= 70:
+            result['hits']['hits'][i]['_source']['url'] = url[:70] + "...."
 
 
     print("最初だよ!!!!!!")

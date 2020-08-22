@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup  # BeautifulSoupクラスをインポート
 import MeCab
 import collections
 
+from .standard.netui import netui
+
 
 # readability-lxmlのDEBUG/INFOレベルのログを表示しないようにする。
 # Spider実行時にreadability-lxmlのログが大量に表示されて、ログが見づらくなるのを防ぐため。
@@ -23,17 +25,9 @@ def get_content(html: str) -> Tuple[str, str]:
     content_text = lxml.html.fromstring(content_html).text_content().strip()
     short_title = document.short_title()
 
-    #Mecab-----
 
-    l = []
-    mecabTagger = MeCab.Tagger("-Ochasen")
-    node = mecabTagger.parseToNode(content_text)
-    while node:
-        word = node.surface
-        l.append(word) if word != "" else print("")
-        node = node.next
 
-    return short_title, content_text, len(l)
+    return short_title, content_text, netui(content_text)
 
 def bs4_test(html: str) -> Tuple[str, str]:
     soup = BeautifulSoup(html)

@@ -12,20 +12,19 @@
 
     
     <!-- 検索フォーム -->
-    <div class="header">
-        <div class="header_search">
-            <form class="search_field">
-                    <div class="logo">
-                        <a href="http://localhost:8000/">
-                            <img src="test3.png" alt="search" height="30" width="92">
-                        </a>
-                    </div>
-                <div class="box">
-                    <input type="text" name="q" class="textbox" value="{{ query }}">
-                    <input type="submit" class="search_button" value="🔍">
-                </div>
-            </form>
-        </div>
+    <div class="search_top">
+        <form class="search_field">
+                <!--
+                <div class="logo">
+                    <a href="http://localhost:8000/">
+                        <img src="test3.png" alt="search" height="30" width="92">
+                    </a>
+                </div>-->
+            <div class="box">
+                <input type="text" name="q" class="textbox" value="{{ query }}">
+                <input type="submit" class="search_button" value="🔍">
+            </div>
+        </form>
     </div>
     <!-- 検索カテゴリ　-->
     <div class="category">
@@ -49,16 +48,34 @@
     </div>
 
 
-    <!-- 検索結果 -->
-    <% for page in pages: %>
-    <div class="search">
-        <h3><a href="{{ page["_source"]["url"] }}">{{ page["_source"]["title"] }}</a></h3>
-        <div class="link">{{ page["_source"]["url"] }}</div>
-        <% try: %>
-        <div class="fragment">{{! page["highlight"]["content"][0] }}</div>
-        <% except : %>
-        <p>なし</p>
-    <% end %>
+    <div class="netui">
+        <div class="netui-1">
+            <a href="http://localhost:8000/?q={{ query }}&p=netui-1"><p>熱意なし</p></a>
+        </div>
+        <div class="netui1">
+            <a href="http://localhost:8000/?q={{ query }}&p=netui1"><p>熱意Level1</p></a>
+        </div>
+        <div class="netui2">
+            <a href="http://localhost:8000/?q={{ query }}&p=netui2"><p>熱意Level2</p></a>
+        </div>
+        <div class="netui3">
+            <a href="http://localhost:8000/?q={{ query }}&p=netui3"><p>熱意Level3</p></a>
+        </div>
     </div>
+
+
+    <!-- 検索結果 -->
+    <% for i,page in enumerate(pages): %>
+        <div class="search"> 
+            <div class="result">
+                <h3><a href="{{ page["_source"]["url"] }}">{{ page["_source"]["title"] }}</a></h3>
+                <div class="link">{{ page["_source"]["url"] }}</div>
+                <% try: %>
+                <div class="fragment">{{! page["highlight"]["content"][0] }}</div>
+                <% except : %>
+                <p>なし</p>
+    <% end %>
+            </div>
+        </div>
 </body>
 </html>

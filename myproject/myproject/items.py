@@ -29,8 +29,7 @@ class Page(scrapy.Item):
     url = scrapy.Field()
     title = scrapy.Field()
     content = scrapy.Field()
-    count_image=scrapy.Field()
-    hinshi=scrapy.Field()
+    kimoti=scrapy.Field()
 
     """def __repr__(self):
         
