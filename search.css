@@ -1,0 +1,109 @@
+*:focus {
+    outline: none;
+}
+body {
+    width: 100%;
+    background-color:#FAEDE7;
+    font-family: Arial,sans-serif;
+}
+.logo {
+    position: absolute;
+    left: 30px;
+    top: 32px;
+}
+.search_field{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    -webkit- transform: translateY(-50%) translateX(-50%);
+}
+.box {
+    position: relative;
+    display: flex;
+    background-color: #ffffff;
+    border: 1px solid #d2d4d8;
+    border-radius: 50px;
+    height: 40px;
+    width: 300px;
+    padding: 5px 4px 0 16px;
+}
+.textbox {
+    border: none;
+    font-size: 16px;
+    height: 40px;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    padding-left: 10px;
+}
+.search_button {
+    background: #ffffff;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+.category {
+    display: inline;
+    margin-left: 169px;
+}
+.all {
+    display: inline-block;
+    padding-left: 20px;
+}
+.know {
+    display: inline-block;
+    padding-left: 20px;
+}
+.watch {
+    display: inline-block;
+    padding-left: 20px;
+}
+.buy {
+    display: inline-block;
+    padding-left: 20px;
+}
+.eat {
+    display: inline-block;
+    padding-left: 20px;
+}
+.search{
+    position: relative;/*absolute*/
+    font-size:13px;
+    background-color: #ff9bb3;
+    border: 1px solid #fc5b9e;
+    border-radius:25px;
+    height: 100px;
+    width: 170px;
+    left:30px;
+    word-wrap: break-word;
+    padding-bottom: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+    overflow:hidden;
+    transition: all 0.2s ease 0s;
+}
+.search:not(:hover) .link{
+    display:none;
+}
+.search:not(:hover) .fragment{
+    display:none;
+}
+.search:hover{ /*マウスホバー時*/
+    font-size:11px;
+    height: 145px;
+    width: 250px;
+}
+a {
+    text-decoration: none;
+    color:rgb(0, 0, 0);
+}
+h3 { font-weight: normal; margin-bottom: 0; }
+em { font-weight: bold; font-style: normal; }
+.link { 
+    color: green; 
+}
+.fragment { 
+    font-size: 12px; 
+    color:rgb(0, 0, 0);
+}
