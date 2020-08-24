@@ -6,7 +6,7 @@ from bottle import route, run, request, template, static_file
 from myproject.myproject.standard.resipi import resi
 from myproject.myproject.standard.kau import kau
 from myproject.myproject.standard.taberu import taberu
-from myproject.myproject.standard.netui import netui
+from myproject.myproject.standard.netui import netui2
 import random
 import collections
 import MeCab
@@ -30,13 +30,20 @@ def index():
     # クエリがある場合は検索結果を、ない場合は[]をpagesに代入する。
     pages = search_pages(query) if query else []
 
-
-    l = []
-    r = []
+    c = ["black"]*4
+    a = request.query.p
+    if a == "netui-1":
+        c[0] = "blue"
+    if a == "netui1":
+        c[1] = "blue"
+    if a == "netui2":
+        c[2] = "blue"
+    if a == "netui3":
+        c[3] = "blue"
 
     # Bottleのテンプレート機能を使って、search.tplというファイルから読み込んだテンプレートに
     # queryとpagesの値を渡してレンダリングした結果をレスポンスボディとして返す。
-    return template('search', query=query, pages=pages) #search.tqlにqueryとpagesを渡す
+    return template('search', query=query, pages=pages,color1=c[0],color2=c[1],color3=c[2],color4=c[3]) #search.tqlにqueryとpagesを渡す
 
 def netui():
     query = request.query.p
@@ -44,15 +51,15 @@ def netui():
     n2 = 10
     if query == "netui-1":
         n1 = -1.0
-        n2 = 0.04
-    elif query == "netui1":
-        n1 = 0.04
+        n2 = 0.02
+    if query == "netui1":
+        n1 = 0.02
         n2 = 0.06
-    elif query == "netui2":
+    if query == "netui2":
         n1 = 0.06
-        n2 = 0.18
-    elif query == "netui3":
-        n1 = 0.18
+        n2 = 0.1
+    if query == "netui3":
+        n1 = 0.1
         n2 = 5.0
     
     return n1 , n2
@@ -159,7 +166,7 @@ def search_pages(query: str) -> List[dict]:
 
     netuikun = []
     for i,n in enumerate(result['hits']['hits']):
-        n = netui(result['hits']['hits'][i]["_source"]["content"])
+        n = netui2(result['hits']['hits'][i]["_source"]["content"])
         netuikun.append(n)
         print(n,len(result['hits']['hits']),len(netuikun))
 
