@@ -1,12 +1,13 @@
 from typing import List  # 型ヒントのためにインポート
 import re
 from elasticsearch import Elasticsearch
+import bottle
 from bottle import route, run, request, template, static_file
 
 from myproject.myproject.standard.resipi import resi
 from myproject.myproject.standard.kau import kau
 from myproject.myproject.standard.taberu import taberu
-from myproject.myproject.standard.netui import netui2
+from myproject.myproject.standard.netui import know,watch,buy,eat
 import random
 import collections
 import MeCab
@@ -30,20 +31,25 @@ def index():
     # クエリがある場合は検索結果を、ない場合は[]をpagesに代入する。
     pages = search_pages(query) if query else []
 
-    c = ["black"]*4
+    c = ["#6d6d6d"]*4
+    color0 = "white"
     a = request.query.p
     if a == "netui-1":
-        c[0] = "blue"
+        c[0] = "black"
+        color0 = "#dbdbdb"
     if a == "netui1":
-        c[1] = "blue"
+        c[1] = "black"
+        color0 = "#ffd3d3"
     if a == "netui2":
-        c[2] = "blue"
+        c[2] = "black"
+        color0 = "#ffaabd"
     if a == "netui3":
-        c[3] = "blue"
+        c[3] = "black"
+        color0 = "#ff9393"
 
     # Bottleのテンプレート機能を使って、search.tplというファイルから読み込んだテンプレートに
     # queryとpagesの値を渡してレンダリングした結果をレスポンスボディとして返す。
-    return template('search', query=query, pages=pages,color1=c[0],color2=c[1],color3=c[2],color4=c[3]) #search.tqlにqueryとpagesを渡す
+    return template('search', query=query, pages=pages,color0=color0,color1=c[0],color2=c[1],color3=c[2],color4=c[3]) #search.tqlにqueryとpagesを渡す
 
 def netui():
     query = request.query.p
@@ -113,17 +119,17 @@ def search_pages(query: str) -> List[dict]:
     })
 
     
-    query = request.query.p
+    """query = request.query.p
     if query == "words":
         m = []
         for i,n in enumerate(result['hits']['hits']):
-            m.append(result['hits']['hits'][i]['_source']['hinshi'])
+            m.append(know(result['hits']['hits'][i]['_source']['content']))
         c = zip(result['hits']['hits'], m)  #まとめる
         c = sorted(c, key = lambda x: x[1],reverse=True)    #hinshiを基準に並び替え
         #a, b = list(zip(*c)) タプル型になってしまう
         result['hits']['hits'], b = list(map(list, (zip(*c))))   #元の形で返す
 
-    """if query == "images":
+    if query == "images":
         m = []
         for i,n in enumerate(result['hits']['hits']):
             m.append(result['hits']['hits'][i]['_source']['count_image'])
@@ -215,6 +221,7 @@ def search_pages(query: str) -> List[dict]:
     #print(result['hits']['hits'])
     return result['hits']['hits']
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
     # 開発用のHTTPサーバーを起動する。
-    run(host='0.0.0.0', port=8000, debug=True, reloader=True)
+ #   run(host='0.0.0.0', port=8000, debug=True, reloader=True)
+app = bottle.default_app()
