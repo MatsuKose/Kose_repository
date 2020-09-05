@@ -2,12 +2,13 @@ from typing import List  # 型ヒントのためにインポート
 import re
 from elasticsearch import Elasticsearch
 import bottle
-from bottle import route, run, request, template, static_file
+from bottle import route, run, request, template, static_file, url
 
 from myproject.myproject.standard.resipi import resi
 from myproject.myproject.standard.kau import kau
 from myproject.myproject.standard.taberu import taberu
 from myproject.myproject.standard.netui import know,watch,buy,eat
+import os
 import random
 import collections
 import MeCab
@@ -15,9 +16,13 @@ from operator import itemgetter
 
 es = Elasticsearch(['localhost:9200'])
 
-@route('/<filename:path>')  #静的ファイルを使う
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, 'template')
+@route('/template/<filename:path>')
 def send_static(filename):
-    return static_file(filename, root='')
+    """静的ファイルを返す
+    """
+    return static_file(filename, root=f'{STATIC_DIR}')
 
 
 @route('/')
@@ -31,25 +36,59 @@ def index():
     # クエリがある場合は検索結果を、ない場合は[]をpagesに代入する。
     pages = search_pages(query) if query else []
 
-    c = ["#6d6d6d"]*4
-    color0 = "white"
+    c = ["#878787"]*9
+    s = ["50%"]*5
+    ss = ["#668ad8"]*5
     a = request.query.p
     if a == "netui-1":
         c[0] = "black"
-        color0 = "#dbdbdb"
     if a == "netui1":
         c[1] = "black"
-        color0 = "#ffd3d3"
     if a == "netui2":
         c[2] = "black"
-        color0 = "#ffaabd"
     if a == "netui3":
         c[3] = "black"
-        color0 = "#ff9393"
+    if a == "":
+        c[4] = "black"
+        s[0] = "30%"
+        ss[0] = "#4271d6"
+    if a == "words":
+        c[5] = "black"
+        s[1] = "30%"
+        ss[1] = "#4271d6"
+    if a == "images":
+        c[6] = "black"
+        s[2] = "30%"
+        ss[2] = "#4271d6"
+    if a == "buy":
+        c[7] = "black"
+        s[3] = "30%"
+        ss[3] = "#4271d6"
+    if a == "eat":
+        c[8] = "black"
+        s[4] = "30%"
+        ss[4] = "#4271d6"
 
     # Bottleのテンプレート機能を使って、search.tplというファイルから読み込んだテンプレートに
     # queryとpagesの値を渡してレンダリングした結果をレスポンスボディとして返す。
-    return template('search', query=query, pages=pages,color0=color0,color1=c[0],color2=c[1],color3=c[2],color4=c[3]) #search.tqlにqueryとpagesを渡す
+    return template('template/search',
+        query=query, 
+        pages=pages,
+        color1=c[0],
+        color2=c[1],
+        color3=c[2],
+        color4=c[3],
+        all=c[4],
+        know=c[5],
+        watch=c[6],
+        buy=c[7],
+        eat=c[8],
+        all_size=s[0],
+        know_size=s[1],
+        watch_size=s[2],
+        buy_size=s[3],
+        eat_size=s[4]
+        ) #search.tqlにqueryとpagesを渡す
 
 def netui():
     query = request.query.p

@@ -1,0 +1,230 @@
+*:focus {
+    outline: none;
+}
+.search_top{
+    position: fixed;
+    background-color: #fff;
+    top: -6px;
+    padding-top: 30px;
+    width:100%;
+}
+.search_field {
+    position: relative;
+    margin: 0 auto;
+    margin-left: 133px;
+    width: 692px;
+    padding-left: 40px;
+}
+.logo {
+    position: absolute;
+    left: -140px;
+    padding: 4px 28px 0 30px;
+    top: 4px;
+}
+.space{
+    flex: 1;
+    display: flex;
+    padding: 5px 4px 0 16px;
+    padding-left: 18px;
+}
+.box {
+    background: #fff;
+    display: flex;
+    border: 1px solid #bfc2ca;
+    box-shadow: none;
+    height: 39px;
+    width: 690px;
+    border-radius: 7px;
+    z-index: 3;
+    height: 44px;
+    margin: 0 auto;
+}
+.textbox{
+    position: relative;
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: rgba(0,0,0);
+    /*word-wrap: break-word;*/
+    outline: none;
+    display: flex;
+    flex: 100%;
+    -webkit-tap-highlight-color: transparent;
+    /*margin-top: -37px;*/
+    /*height: 34px;*/
+    font-size: 16px;
+    top: -2px;
+}
+.search_button{
+    height: 30px;
+    width: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    /*flex: 0 0 auto;*/
+    padding-right: 10px;
+}
+.search_bar{
+    /*line-height: 111px;*/
+    top:60px;
+    /*left: 200px;*/
+    height: 38px;
+    /*overflow: hidden;
+    overflow-x: auto;
+    overflow-style: move;*/
+    white-space: nowrap;
+    /*-webkit-overflow-scrolling: touch;*/
+    position: relative;
+}
+.category{
+    margin-left:175px;
+    padding-left: 0px;
+    white-space: nowrap;
+    display: flex;    
+    border-bottom:solid 1px rgb(153, 153, 153);
+}
+.items{
+    list-style: none;
+    overflow: hidden;
+    vertical-align: top;
+    display: inline-block;
+}
+.all{
+    display: inline-block;
+    text-decoration: none;
+    color: #668ad8;
+    width: 50px;
+    height: 50px;
+    line-height: 25px;
+    border-radius: 50%;
+    border: solid 2px #668ad8;
+    text-align: center;
+    overflow: hidden;
+    font-weight: bold;
+    transition: .4s;
+}
+.know{
+    display: inline-block;
+    text-decoration: none;
+    color: #668ad8;
+    height:50px;
+    width:50px;
+    line-height: 25px;
+    border-radius: 50%;
+    border: solid 2px #668ad8;
+    text-align: center;
+    overflow: hidden;
+    font-weight: bold;
+    transition: .4s;
+}
+.watch{
+    display: inline-block;
+    text-decoration: none;
+    color: #668ad8;
+    height:50px;
+    width:50px;
+    line-height: 25px;
+    border-radius: 50%;
+    border: solid 2px #668ad8;
+    text-align: center;
+    overflow: hidden;
+    font-weight: bold;
+    transition: .4s;
+}
+.buy{
+    display: inline-block;
+    text-decoration: none;
+    color: #668ad8;
+    height:50px;
+    width:50px;
+    line-height: 25px;
+    border-radius: 50%;
+    border: solid 2px #668ad8;
+    text-align: center;
+    overflow: hidden;
+    font-weight: bold;
+    transition: .4s;
+}
+.eat{
+    display: inline-block;
+    text-decoration: none;
+    color: #668ad8;
+    height:50px;
+    width:50px;
+    line-height: 25px;
+    padding-top: 50%;
+    border: solid 2px #668ad8;
+    text-align: center;
+    overflow: hidden;
+    font-weight: bold;
+    transition: .4s;
+}
+.i :hover{
+    background: #b3e1ff;
+    -webkit-transform: rotate(10deg);
+    transform: rotate(10deg);
+    text-decoration: none;
+}
+.result_field{
+    margin-top: 150px;
+}
+.netui{
+    position: fixed;
+    /*display:inline-block;*/
+    margin-top:110px;
+    padding-top:20px;
+    padding-left: 5px;
+    height:100%;
+    width:170px;
+}
+.netu{
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    height:60px;
+    width: 100px;
+    text-align:center;
+    padding: 0.25em 0.5em;
+    margin-bottom:30px;
+    color: #00BCD4;
+    background: #fffbf4;
+    border-radius: 0 30px 30px 0;
+    border: 3px solid rgb(218, 97, 97);
+    transition: .4s;
+}
+.netu:hover{
+    background: #aca6a6;
+    text-decoration: none;
+}
+.fire{
+    position: relative;
+    display: inline-block;
+}
+
+.search{
+    padding-left: 230px;
+    margin-bottom: 28px;
+    width: 670px;
+}
+
+
+
+
+.a :link, :visited, :hover, :active, :focus{
+    color:rgb(107, 107, 107);
+
+}
+h3 { font-weight: normal; margin-bottom: 0; }
+em { font-weight: bold; font-style: normal; }
+.page_link{
+    color:rgb(76, 78, 53);
+}
+.link { 
+    color: green; 
+}
+.fragment { 
+    font-size: 90%; 
+    color:rgb(0, 0, 0);
+}
+    
